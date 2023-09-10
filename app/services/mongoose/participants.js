@@ -1,12 +1,12 @@
 const Participant = require('../../api/v1/participants/model');
 const Events = require('../../api/v1/events/model');
 const Orders = require('../../api/v1/orders/model');
-// const Payments = require('../../api/v1/payments/model');
+const Payments = require('../../api/v1/payments/model');
 
 const { BadRequestError, NotFoundError, UnauthorizedError } = require('../../errors');
 const { createTokenParticipant, createJWT } = require('../../utils');
 
-const { otpMail } = require('../mail');
+const { invoiceCheckoutMail } = require('../mail');
 
 const signupParticipant = async (req) => {
   const { firstName, lastName, email, password, role } = req.body;
@@ -189,6 +189,10 @@ const checkoutOrder = async (req) => {
   });
 
   await result.save();
+
+  await invoiceCheckoutMail(personalDetail.email, result);
+
+
   return result;
 };
 
