@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { jwtSecret, jwtExpiration, jwtRefreshExpiration } = require('../config');
+const { jwtSecret, jwtExpiration, jwtRefreshTokenSecret, jwtRefreshTokenExpiration } = require('../config');
 
+// token
 const createJWT = ({ payload }) => {
   const token = jwt.sign(payload, jwtSecret, {
     expiresIn: jwtExpiration,
@@ -8,17 +9,20 @@ const createJWT = ({ payload }) => {
   return token;
 };
 
-const createRefreshToken = ({ payload }) => {
-  const refreshToken = jwt.sign(payload, jwtSecret, {
-    expiresIn: jwtRefreshExpiration,
+// refresh token
+const createRefreshJWT = ({ payload }) => {
+  const token = jwt.sign(payload, jwtRefreshTokenSecret, {
+    expiresIn: jwtRefreshTokenExpiration,
   });
-  return refreshToken;
+  return token;
 };
 
 const isTokenValid = ({ token }) => jwt.verify(token, jwtSecret);
+const isTokenValidRefreshToken = ({ token }) => jwt.verify(token, jwtRefreshTokenSecret);
 
 module.exports = {
-    createJWT,
-    isTokenValid,
-    createRefreshToken,
-}
+  createJWT,
+  isTokenValid,
+  createRefreshJWT,
+  isTokenValidRefreshToken,
+};

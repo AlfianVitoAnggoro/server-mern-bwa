@@ -1,16 +1,17 @@
 const { signin } = require('../../../services/mongoose/auth');
+
 const { StatusCodes } = require('http-status-codes');
 
-const singinCms = async (req, res, next) => {
+const signinCms = async (req, res, next) => {
   try {
     const result = await signin(req);
 
     res.status(StatusCodes.CREATED).json({
-      data: { token: result },
+      data: result,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-module.exports = { singinCms };
+module.exports = { signinCms };

@@ -8,6 +8,8 @@ const { createTokenParticipant, createJWT } = require('../../utils');
 
 const { invoiceCheckoutMail } = require('../mail');
 
+const { otpMail } = require('../mail');
+
 const signupParticipant = async (req) => {
   const { firstName, lastName, email, password, role } = req.body;
 
@@ -191,7 +193,6 @@ const checkoutOrder = async (req) => {
   await result.save();
 
   await invoiceCheckoutMail(personalDetail.email, result);
-
 
   return result;
 };
